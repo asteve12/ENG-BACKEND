@@ -17,6 +17,15 @@ childName:Joi.string().required(),
   childGender:Joi.string().required()
 })
 
+const authenticateLoginSchema = Joi.object({
+email:Joi.string().required(),
+password:Joi.string().required(),
+
+})
+
+
 
 
 export const  authenticateValidator = SchemaValidator(authenticateSchema,createOptions,'body')
+export const  authenticateLoginValidator = SchemaValidator(authenticateLoginSchema,createOptions,'body')
+

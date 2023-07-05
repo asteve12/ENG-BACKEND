@@ -2,6 +2,12 @@
 import { ISignUp ,ILogin} from "./authenticate.type";
 //prisma
 import PrismaClient from "../../model";
+import { generateJWT } from "../../utils/jwt";
+
+
+
+
+
 
 //singup user
 export const signUpUser = async (LoginCredential: ISignUp): Promise<any> => {
@@ -39,12 +45,15 @@ export const LogUserIn = async (LoginCredential:ILogin ): Promise<any> => {
       
     })
 
-    return res;
+     if (!res || res.password !== LoginCredential.password) {
+    throw new Error('Invalid username or password');
+  }
+  
+
+
+    return {...res,token:generateJWT(LoginCredential)};
   } catch (e: any) {
-    if (e.message.includes("Unique constraint failed")) {
-      throw new Error("User  Already Exist");
-      return;
-    }
+    
     throw new Error(e.message);
   }
 };
